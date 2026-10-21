@@ -1210,8 +1210,8 @@ HRESULT STDMETHODCALLTYPE Buffer::SetVolume(LONG volume) noexcept
 
     if(volume > DSBVOLUME_MAX || volume < DSBVOLUME_MIN)
     {
-        WARN("Invalid volume ({})", volume);
-        return DSERR_INVALIDPARAM;
+        WARN("Clamping out-of-range volume ({})", volume);
+        volume = std::clamp(volume, LONG{DSBVOLUME_MIN}, LONG{DSBVOLUME_MAX});
     }
 
     if(!(mBuffer->mFlags&DSBCAPS_CTRLVOLUME))
